@@ -1,0 +1,60 @@
+﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+html, body {
+    margin: 0;
+    border: 0;
+    padding: 0;
+    background-color: black;
+    overflow: hidden;
+}
+
+*:focus {
+    outline: none;
+}
+
+.game-window {
+    overflow: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 650px;
+    max-height:  650px;
+    height:  650px;
+    min-width:  750px;
+    max-width:  750px;
+    width:  750px;
+    background-image: url("/assets/grass.png");
+}
+
+.bomb {
+    background-image: url("/assets/bomb.png");
+}
+
+.box {
+    background-image: url("/assets/box.png");
+}
+
+.enemy {
+    background-image: url("/assets/enemy.png");
+}
+
+.explosion {
+    background-image: url("/assets/explosion.png");
+}
+
+.finish {
+    background-image: url("/assets/finish.png");
+}
+
+.player {
+    background-image: url("/assets/player.png");
+}
+
+.wall {
+    background-image: url("/assets/wall.png");
+}
+
+.element {
+    position: absolute;
+}

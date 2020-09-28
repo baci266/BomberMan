@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Client\BomberMan.Client.csproj" />
+    <ProjectReference Include="..\Shared\BomberMan.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="plan1.txt" />
+  </ItemGroup>
+
+
+</Project>

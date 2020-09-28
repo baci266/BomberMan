@@ -1,0 +1,11 @@
+﻿@page "/game/{usernick}/{level}"
+
+<div class="game-window" tabindex="0" @ref="GameDiv" @onkeypress="@Move">
+    @lock (ToRender)
+    {
+        @foreach (var renderable in ToRender)
+        {
+            <div class="@renderable.CssClass" style="@renderable.CssStyle" draggable="false" dragstart="false;"> </div>
+        }
+    }
+</div>
