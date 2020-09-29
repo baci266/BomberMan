@@ -4,7 +4,7 @@ namespace BomberMan.Client.Data
 {
     public class ElementMap
     {
-        private GameElement[,] Map { get; set; }
+        private GameElement[,] Map { get; }
 
         public ElementMap(int width, int height)
         {
