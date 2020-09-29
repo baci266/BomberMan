@@ -32,6 +32,9 @@ namespace BomberMan.Server.Migrations
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
+                    b.Property<long>("TimeElapsed")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("UserNick")
                         .HasColumnType("nvarchar(max)");
 
