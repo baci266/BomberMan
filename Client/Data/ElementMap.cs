@@ -53,9 +53,6 @@ namespace BomberMan.Client.Data
             int x = bomb.MapPositionX;
             int y = bomb.MapPositionY;
             
-            Console.WriteLine(x);
-            Console.WriteLine(y);
-
             for (int i = x - 1; i > x - radius; i--)
             {
                 if (Helper(i, y, explosions)) break;
@@ -89,14 +86,14 @@ namespace BomberMan.Client.Data
             return false;
         }
 
-        public List<GameElement> GetAllElements(bool excludeWalls = false)
+        public List<GameElement> GetAllElements(bool excludeWallsAndBoxes = false)
         {
             List<GameElement> elements = new List<GameElement>();
             for (int i = 0; i < Map.GetLength(0); i++)
             {
                 for (int j = 0; j < Map.GetLength(1); j++)
                 {
-                    if (excludeWalls && Map[i,j] is Wall) continue;
+                    if (excludeWallsAndBoxes && (Map[i,j] is Wall || Map[i,j] is Box)) continue;
                     elements.Add(Map[i,j]);
                 }
             }

@@ -6,6 +6,10 @@ namespace BomberMan.Client.Data
 {
     public class GameLogic
     {
+        public GameState GameState;
+        
+        public GameTime GameTime;
+        
         private readonly Dictionary<string, Direction> directionKeys = new Dictionary<string, Direction>()
         {
             {"KeyW", Direction.Up},
@@ -16,13 +20,13 @@ namespace BomberMan.Client.Data
         
         private ElementMap ElementMap { get; set; }
         
-        public List<Enemy> Enemies = new List<Enemy>();
+        private List<Enemy> Enemies = new List<Enemy>();
         
-        public List<Bomb> Bombs = new List<Bomb>();
+        private List<Bomb> Bombs = new List<Bomb>();
         
-        public List<Explosion> Explosions = new List<Explosion>();
+        private List<Explosion> Explosions = new List<Explosion>();
         
-        public Player Player;
+        private Player Player;
 
         private Finish Finish;
         
@@ -44,6 +48,7 @@ namespace BomberMan.Client.Data
         public GameLogic(char[][] charMap)
         {
             CreateMap(charMap);
+            ChangeGameState(GameState.Playing);
         }
 
         private void CreateMap(char[][] charMap)
@@ -81,8 +86,24 @@ namespace BomberMan.Client.Data
             }
         }
 
+        private void ChangeGameState(GameState gameState)
+        {
+            if (gameState == GameState.Playing)
+            {
+                GameTime = new GameTime();
+                GameTime.Start();
+            }
+            else if (gameState == GameState.Lose || gameState == GameState.Win)
+            {
+                GameTime.Stop();
+            }
+            GameState = gameState;
+        }
+        
         public void MakeMove(KeyboardEventArgs keyPressed)
         {
+            if (GameState != GameState.Playing) return;
+            
             //move with enemies
             MoveEnemy();
 
@@ -93,16 +114,38 @@ namespace BomberMan.Client.Data
                 if (keyPressed.Code == "Space") AddBomb();
             }
             
-            if (EnemyEatPlayer()) Player.isDead = true;
-            if (ExplosionDestroyPlayer()) Player.isDead = true;
+            // check if enemy destroys player
+            if (EnemyEatPlayer())
+            {
+                Player.isDead = true;
+                ChangeGameState(GameState.Lose);
+            }
+            
+            // check if explosion destroys player
+            if (ExplosionDestroyPlayer())
+            {
+                Player.isDead = true;
+                ChangeGameState(GameState.Lose);
+            }
+            
+            // check if explosion destroys enemy
             ExplosionDestroyEnemy();
+            
+            // explosion and bombs ticking
             ProcessBombs();
             ProcessExplosions();
             
+            // if all enemies are dead and Finish is not set create Finish
             if (Enemies.Count == 0 && Finish == null)
             {
                 (int x, int y) = ElementMap.GetFinishPosition();
                 Finish = new Finish(x, y);
+            }
+            
+            // if there is finish check if player is on it
+            if (Finish != null && Finish.IntersectWith(Player))
+            {
+                ChangeGameState(GameState.Win);
             }
         }
         
@@ -134,6 +177,7 @@ namespace BomberMan.Client.Data
         {
             foreach (var bomb in Bombs)
             {
+                // if there is bomb on the same tile
                 if (GameElement.OnTheSameTile(bomb, Player)) return;
             }
             Bombs.Add(new Bomb(Player.MapPositionX, Player.MapPositionY));
@@ -204,6 +248,5 @@ namespace BomberMan.Client.Data
                 }
             }
         }
-
     }
 }

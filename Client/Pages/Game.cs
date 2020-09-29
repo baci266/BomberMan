@@ -27,15 +27,17 @@ namespace BomberMan.Client.Pages
         [Inject] private GameUniverse GameUniverse { get; set; }
         
         [Inject] private HttpClient Http { get; set; }
+        
+        [Inject] private NavigationManager NavManager { get; set; }
         #endregion
         private List<GameElement> ToRender { get; } = new List<GameElement>();
         
         protected ElementReference GameDiv;
         
         private bool _isFocusSet = false;
-        
-        private bool GameOver { get; set; }
 
+        private GameState GameState = GameState.Playing;
+        
         private void Move(KeyboardEventArgs args)
         {
             GameUniverse.KeyPressed = args;
@@ -67,8 +69,18 @@ namespace BomberMan.Client.Pages
                 ToRender.AddRange(toRender);
             }
 
-            GameOver = GameUniverse.GameLogic.Player.isDead;
+            GameState = GameUniverse.GameLogic.GameState;
             InvokeAsync( StateHasChanged );
+        }
+
+        private void RestartLevel()
+        {
+            NavManager.NavigateTo($"/game/{UserNick}/{Level}");
+        }
+
+        private void NewGame()
+        {
+            NavManager.NavigateTo("/");
         }
     }
 }

@@ -7,8 +7,8 @@ namespace BomberMan.Client.Data
 {
     public class GameUniverse
     {
-        public const int Fps = 30;
-        public int FpsDelay => (int) 1000.0 / Fps;
+        public const int Fps = 60;
+        public static int FpsDelay => (int) 1000.0 / Fps;
         public bool IsGameRunning { get; set; }
         
         public static event EventHandler RenderMethod;

@@ -22,8 +22,8 @@ namespace BomberMan.Client.Data
         public string GetFormattedElapsedTime()
         {
             TimeSpan ts = _stopwatch.Elapsed;
-
-            return String.Format("{1:00}:{2:00}.{3:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+            
+            return string.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
         }
     }
 }
