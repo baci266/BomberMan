@@ -13,9 +13,8 @@ namespace BomberMan.Client.Data
             {"KeyS", Direction.Down},
             {"KeyD", Direction.Right}
         };
-        public List<Wall> Walls = new List<Wall>();
         
-        public List<Box> Boxes = new List<Box>();
+        private ElementMap ElementMap { get; set; }
         
         public List<Enemy> Enemies = new List<Enemy>();
         
@@ -25,25 +24,15 @@ namespace BomberMan.Client.Data
         
         public Player Player;
         
-        public List<GameElement> Obstacles
-        {
-            get
-            {
-                var obstacles = new List<GameElement>();
-                obstacles.AddRange(Walls);
-                obstacles.AddRange(Boxes);
-                return obstacles;
-            }
-        }
-        
         public List<GameElement> AllElements
         {
             get
             {
                 var elements = new List<GameElement>();
-                elements.AddRange(Walls);
-                elements.AddRange(Boxes);
+                elements.AddRange(ElementMap.GetAllElements());
                 elements.AddRange(Enemies);
+                elements.AddRange(Bombs);
+                elements.AddRange(Explosions);
                 elements.Add(Player);
                 return elements;
             }
@@ -56,6 +45,8 @@ namespace BomberMan.Client.Data
 
         private void CreateMap(char[][] charMap)
         {
+            ElementMap = new ElementMap(charMap[0].Length, charMap.Length);
+            
             for (int i = 0; i < charMap.Length; i++)
             {
                 for (int j = 0; j < charMap[i].Length; j++)
@@ -64,10 +55,10 @@ namespace BomberMan.Client.Data
                     switch (c)
                     {
                         case 'X':
-                            Walls.Add(new Wall(j, i));
+                            ElementMap.AddElement(new Wall(j,i));
                             break;
                         case 'B':
-                            Boxes.Add(new Box(j, i));
+                            ElementMap.AddElement(new Box(j,i));
                             break;
                         case 'P':
                             Player = new Player(j, i);
@@ -93,13 +84,20 @@ namespace BomberMan.Client.Data
                 if (directionKeys.ContainsKey(keyPressed.Code)) MovePlayer(keyPressed);
                 if (keyPressed.Code == "Space") AddBomb();
             }
-        }
+            
+            if (EnemyEatPlayer()) Player.isDead = true;
+            if (ExplosionDestroyPlayer()) Player.isDead = true;
+            ExplosionDestroyEnemy();
+            ProcessBombs();
+            ProcessExplosions();
 
+        }
+        
         private void MoveEnemy()
         {
             foreach (var enemy in Enemies)
             {
-                if (enemy.Movement != null && enemy.CanMove(enemy.Movement, Obstacles))
+                if (enemy.Movement != null && enemy.CanMove(enemy.Movement, ElementMap.GetCloseElements(enemy)))
                 {
                     enemy.Move(enemy.Movement);
                 }
@@ -113,15 +111,84 @@ namespace BomberMan.Client.Data
         private void MovePlayer(KeyboardEventArgs keyPressed)
         {
             var playerMovement = Movement.CreateFromDirection(directionKeys[keyPressed.Code], Player.Speed);
-            if (Player.CanMove(playerMovement, Obstacles))
+            if (Player.CanMove(playerMovement, ElementMap.GetCloseElements(Player)))
             {
                 Player.Move(playerMovement);
-            }  
+            }
         }
         
         private void AddBomb()
         {
+            Bombs.Add(new Bomb(Player.MapPositionX, Player.MapPositionY));
+        }
+
+        private void ProcessBombs()
+        {
+            for (int i = Bombs.Count -1; i >= 0; i--)
+            {
+                Bomb bomb = Bombs[i];
+                if (bomb.Exploded())
+                {
+                    CreateExplosion(bomb);
+                    Bombs.RemoveAt(i);
+                }
+            }
+        }
+        
+        private void CreateExplosion(Bomb bomb)
+        {
             
         }
+        
+        private void ProcessExplosions()
+        {
+            Explosions.RemoveAll(bomb => !bomb.isActive());
+        }
+
+        private bool EnemyEatPlayer()
+        {
+            bool result = false;
+            foreach (var enemy in Enemies)
+            {
+                if (enemy.IntersectWith(Player))
+                {
+                    result = true;
+                    break;
+                }
+            }
+
+            return result;
+        }
+        
+        private bool ExplosionDestroyPlayer()
+        {
+            bool result = false;
+            foreach (var explosion in Explosions)
+            {
+                if (explosion.IntersectWith(Player))
+                {
+                    result = true;
+                    break;
+                }
+            }
+
+            return result;
+        }
+        
+        private void ExplosionDestroyEnemy()
+        {
+            foreach (var explosion in Explosions)
+            {
+                for (int i = 0; i < Enemies.Count; i++)
+                {
+                    Enemy enemy = Enemies[i];
+                    if (enemy.IntersectWith(explosion))
+                    {
+                        Enemies.RemoveAt(i);
+                    }
+                }
+            }
+        }
+
     }
 }

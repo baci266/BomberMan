@@ -10,6 +10,9 @@ namespace BomberMan.Client.Data
         private readonly int _tileHeight;
         public int TopPosition { get; set; }
         public int LeftPosition { get; set; }
+
+        public int MapPositionX => LeftPosition / BaseTileSize;
+        public int MapPositionY => TopPosition / BaseTileSize;
         public string CssClass => $"{_imageName} element unselectable";
         public string CssStyle => $"top: {TopPosition}px; left: {LeftPosition}px; width: {_tileWidth}px; height: {_tileHeight}px;";
         

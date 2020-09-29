@@ -33,6 +33,8 @@ namespace BomberMan.Client.Pages
         protected ElementReference GameDiv;
         
         private bool _isFocusSet = false;
+        
+        private bool GameOver { get; set; }
 
         private void Move(KeyboardEventArgs args)
         {
@@ -64,6 +66,8 @@ namespace BomberMan.Client.Pages
                 ToRender.Clear();
                 ToRender.AddRange(toRender);
             }
+
+            GameOver = GameUniverse.GameLogic.Player.isDead;
             InvokeAsync( StateHasChanged );
         }
     }

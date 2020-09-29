@@ -4,9 +4,18 @@
     {
         private const string ImageName = "explosion";
 
+        private int _activeTicks = 50;
+
         public Explosion(int mapPositionX, int mapPositionY) : 
             base(ImageName, mapPositionX, mapPositionY)
         {
+        }
+        
+        public bool isActive()
+        {
+            _activeTicks--;
+
+            return _activeTicks > 0;
         }
     }
 }

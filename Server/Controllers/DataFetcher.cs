@@ -21,24 +21,21 @@ namespace BomberMan.Server.Controllers
             int width = int.Parse(sr.ReadLine());
             int height = int.Parse(sr.ReadLine());
 
-            var result2 = new char[height][];
+            var map = new char[height][];
             
-            var result = new char[height, width];
 
             for (int i = 0; i < height; i++)
             {
                 string line = sr.ReadLine();
-                result2[i] = new char[width];
+                map[i] = new char[width];
                 for (int j = 0; j < width; j++)
                 {
-                    result[i,j] = line[j];
-                    result2[i][j] = line[j];
-
+                    map[i][j] = line[j];
                 }
             }
             sr.Close();
 
-            return result2;
+            return map;
         }
     }
 }
