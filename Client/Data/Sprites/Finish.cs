@@ -2,7 +2,10 @@
 {
     public class Finish : GameElement
     {
-        public Finish(string imageName, int mapPositionX, int mapPositionY) : base(imageName, mapPositionX, mapPositionY)
+        private const string ImageName = "finish";
+        
+        public Finish(int mapPositionX, int mapPositionY) :
+            base(ImageName, mapPositionX, mapPositionY)
         {
         }
     }

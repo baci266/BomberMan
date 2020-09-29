@@ -24,7 +24,7 @@ html, body {
     min-width:  750px;
     max-width:  750px;
     width:  750px;
-    background-image: url("/assets/grass.png");
+    background-color: #20c997;
 }
 
 .bomb {
@@ -40,11 +40,15 @@ html, body {
 }
 
 .explosion {
-    background-image: url("/assets/explosion.png");
+    background-image: url("/assets/explosion.jpg");
 }
 
 .finish {
-    background-image: url("/assets/finish.png");
+    background-image: url("/assets/finish.jpg");
+}
+
+.grass {
+    background-image: url("/assets/grass.png");
 }
 
 .player {

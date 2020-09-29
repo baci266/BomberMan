@@ -16,7 +16,7 @@ namespace BomberMan.Client.Data
         public KeyboardEventArgs KeyPressed;
 
         public GameLogic GameLogic;
-
+        
         public void StartGame(char[][] map)
         { 
             GameLogic = new GameLogic(map);

@@ -23,6 +23,8 @@ namespace BomberMan.Client.Data
         public List<Explosion> Explosions = new List<Explosion>();
         
         public Player Player;
+
+        private Finish Finish;
         
         public List<GameElement> AllElements
         {
@@ -34,6 +36,7 @@ namespace BomberMan.Client.Data
                 elements.AddRange(Bombs);
                 elements.AddRange(Explosions);
                 elements.Add(Player);
+                if (Finish != null) elements.Add(Finish);
                 return elements;
             }
         }
@@ -61,12 +64,15 @@ namespace BomberMan.Client.Data
                             ElementMap.AddElement(new Box(j,i));
                             break;
                         case 'P':
+                            ElementMap.AddElement(new Grass(j,i));
                             Player = new Player(j, i);
                             break;
                         case 'E':
+                            ElementMap.AddElement(new Grass(j,i));
                             Enemies.Add(new Enemy(j, i));
                             break;
                         case '.':
+                            ElementMap.AddElement(new Grass(j,i));
                             break;
                         default:
                             throw new Exception($"Unknow character '{c}' in map");
@@ -77,8 +83,10 @@ namespace BomberMan.Client.Data
 
         public void MakeMove(KeyboardEventArgs keyPressed)
         {
+            //move with enemies
             MoveEnemy();
 
+            // process pressed keys
             if (keyPressed != null)
             {
                 if (directionKeys.ContainsKey(keyPressed.Code)) MovePlayer(keyPressed);
@@ -90,7 +98,12 @@ namespace BomberMan.Client.Data
             ExplosionDestroyEnemy();
             ProcessBombs();
             ProcessExplosions();
-
+            
+            if (Enemies.Count == 0 && Finish == null)
+            {
+                (int x, int y) = ElementMap.GetFinishPosition();
+                Finish = new Finish(x, y);
+            }
         }
         
         private void MoveEnemy()
@@ -119,30 +132,32 @@ namespace BomberMan.Client.Data
         
         private void AddBomb()
         {
+            foreach (var bomb in Bombs)
+            {
+                if (GameElement.OnTheSameTile(bomb, Player)) return;
+            }
             Bombs.Add(new Bomb(Player.MapPositionX, Player.MapPositionY));
         }
 
         private void ProcessBombs()
         {
-            for (int i = Bombs.Count -1; i >= 0; i--)
+            foreach (var bomb in Bombs)
             {
-                Bomb bomb = Bombs[i];
-                if (bomb.Exploded())
-                {
-                    CreateExplosion(bomb);
-                    Bombs.RemoveAt(i);
-                }
+                bomb.Tick();
+                if (bomb.Remove) CreateExplosion(bomb);
             }
+
+            Bombs.RemoveAll(bomb => bomb.Remove);
         }
         
         private void CreateExplosion(Bomb bomb)
         {
-            
+            Explosions.AddRange(ElementMap.GetExplosions(bomb));
         }
         
         private void ProcessExplosions()
         {
-            Explosions.RemoveAll(bomb => !bomb.isActive());
+            Explosions.RemoveAll(explosion => !explosion.isActive());
         }
 
         private bool EnemyEatPlayer()

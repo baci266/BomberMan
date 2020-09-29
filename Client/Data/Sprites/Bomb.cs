@@ -4,20 +4,20 @@
     {
         private const string ImageName = "bomb";
 
-        private int _ticksToExplode = 50;
+        private int _ticksToExplode = 300;
 
         public int ExplosionSize = 3;
+        
+        public bool Remove { get => _ticksToExplode <= 0; }
 
         public Bomb(int mapPositionX, int mapPositionY) :
             base(ImageName, mapPositionX, mapPositionY)
         {
         }
 
-        public bool Exploded()
+        public void Tick()
         {
             _ticksToExplode--;
-
-            return _ticksToExplode <= 0;
         }
     }
 }

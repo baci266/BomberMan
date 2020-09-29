@@ -35,9 +35,10 @@ namespace BomberMan.Client.Data
             _tileWidth = _tileHeight = BaseTileSize;
         }
 
-        public bool IntersectWith(GameElement otherElement)
-        {
-            return ElementRectangle.IntersectsWith(otherElement.ElementRectangle);
-        }
+        public bool IntersectWith(GameElement otherElement) 
+            => ElementRectangle.IntersectsWith(otherElement.ElementRectangle);
+
+        public static bool OnTheSameTile(GameElement element1, GameElement element2)
+            => element1.MapPositionX == element2.MapPositionX && element1.MapPositionY == element2.MapPositionY;
     }
 }
