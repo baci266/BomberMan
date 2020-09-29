@@ -20,8 +20,8 @@ namespace BomberMan.Server.Controllers
         [HttpPost("[action]")]
         public void Create([FromBody] PlayerScore playerScore)
         {
-            if (ModelState.IsValid)
-                this.employee.AddEmployee(employee);
+            /*if (ModelState.IsValid)
+                this.employee.AddEmployee(employee);*/
         }
         
     }
