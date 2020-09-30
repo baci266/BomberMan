@@ -13,12 +13,20 @@ namespace BomberMan.Server.Controllers
     [Microsoft.AspNetCore.Mvc.Route("[controller]")]
     public class ScoreController : ControllerBase
     {
-        [Inject] private ApplicationDbContext Context { get; set; }
+        private readonly ApplicationDbContext _context;
+        
+        public ScoreController(ApplicationDbContext context)
+        {
+            this._context = context;
+        }
 
         [HttpGet("[action]")]
         public List<PlayerScore> GetScoreBoard(string level)
         {
-            var query = from ps in Context.PlayerScores
+            int.TryParse(level, out int intLevel);
+            
+            var query = from ps in _context.PlayerScores
+                where ps.Level == intLevel
                 orderby ps.TimeElapsed ascending
                 select ps;
    
@@ -28,8 +36,8 @@ namespace BomberMan.Server.Controllers
         [HttpPost("[action]")]
         public void Create([FromBody] PlayerScore playerScore)
         {
-            Context.Add(playerScore);
+            _context.Add(playerScore);
+            _context.SaveChangesAsync();
         }
-        
     }
 }

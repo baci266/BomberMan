@@ -109,7 +109,6 @@ namespace BomberMan.Client.Data
             var randElement = gameElements[random.Next(gameElements.Count)];
             
             return (randElement.MapPositionX, randElement.MapPositionY);
-
         }
     }
 }

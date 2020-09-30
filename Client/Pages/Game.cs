@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using BomberMan.Client.Data;
+using BomberMan.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
@@ -37,9 +38,23 @@ namespace BomberMan.Client.Pages
 
         private GameState GameState = GameState.Playing;
         
+        private List<PlayerScore> PlayerScores { get; set; } = new List<PlayerScore>();
+
+        private PlayerScore PlayerScore { get; set; }
+        private string ElapsedTime { get; set; }
+
+        private bool _createScoreSent = false;
+        
         private void Move(KeyboardEventArgs args)
         {
+            Console.WriteLine("key down");
             GameUniverse.KeyPressed = args;
+        }
+        
+        private void StopMove()
+        {
+            Console.WriteLine("key up");
+            GameUniverse.KeyPressed = null;
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -55,8 +70,21 @@ namespace BomberMan.Client.Pages
         protected override async Task OnInitializedAsync()
         {
             var charMap = await Http.GetFromJsonAsync<char[][]>("DataFetcher/LoadMap?level=" + Level);
+            PlayerScores = await Http.GetFromJsonAsync<List<PlayerScore>>("Score/GetScoreBoard?level=" + Level);
             GameUniverse.StartGame(charMap);
             GameUniverse.RenderMethod += Render;
+        }
+
+        protected async Task CreatePlayerScore()
+        {
+            PlayerScore = new PlayerScore()
+            {
+                UserNick = UserNick,
+                DateTime = new DateTime(),
+                Level = int.Parse(Level),
+                TimeElapsed = GameUniverse.GameLogic.GameTime.TotalMilliseconds
+            };
+            await Http.PostAsJsonAsync("Score/Create", PlayerScore);
         }
 
         public void Render(object sender, EventArgs eventArgs)
@@ -69,12 +97,19 @@ namespace BomberMan.Client.Pages
             }
 
             GameState = GameUniverse.GameLogic.GameState;
+            if (GameState == GameState.Win && !_createScoreSent)
+            {
+                CreatePlayerScore();
+                _createScoreSent = true;
+            }
+            ElapsedTime = GameUniverse.GameLogic.GameTime.GetFormattedElapsedTime();
             InvokeAsync( StateHasChanged );
         }
 
         private void RestartLevel()
         {
-            NavManager.NavigateTo($"/game/{UserNick}/{Level}");
+            Console.WriteLine("I m here");
+            NavManager.NavigateTo($"/game/{UserNick}/{Level}", true);
         }
 
         private void NewGame()

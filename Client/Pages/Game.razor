@@ -1,22 +1,43 @@
 ﻿@page "/game/{usernick}/{level}"
 @using BomberMan.Client.Data
 
-<div class="game-window" tabindex="0" @ref="GameDiv" @onkeypress="@Move">
+<div class="score-board">
+    <table style="background-color: yellow">
+        <thead>
+        <tr>
+            <th>User Nick</th>
+            <th>Win in Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var playerScore in PlayerScores)
+        {
+            <tr>
+                <td>@playerScore.UserNick</td>
+                <td>@playerScore.TimeElapsed</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+<div class="float-left" style="background-color: #9fcdff">
     @if (GameState == GameState.Lose)
     {
-        <div class="">
+        <div class="row">
             You lost the game :(
             <a class="btn btn-warning" @onclick="RestartLevel">Restart</a>
         </div>
     }
     @if (GameState == GameState.Win)
     {
-        <div class="">
-            You win in time: 10:10:10
+        <div class="row">
+            You win in time: @ElapsedTime
             <a class="btn btn-warning" @onclick="RestartLevel">Restart</a>
             <a class="btn btn-warning" @onclick="NewGame">Start with new Nick</a>
         </div>
     }
+</div>
+<div class="game-window" tabindex="0" @ref="GameDiv" @onkeydown="@Move" @onkeyupu="@StopMove">
     @lock (ToRender)
     {
         @foreach (var renderable in ToRender)
@@ -24,4 +45,7 @@
             <div class="@renderable.CssClass" style="@renderable.CssStyle" draggable="false" dragstart="false;"> </div>
         }
     }
+</div>
+<div class="float-right" style="background-color: red">
+    @ElapsedTime
 </div>
