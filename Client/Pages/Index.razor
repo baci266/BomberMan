@@ -1,12 +1,17 @@
 ﻿@page "/"
 
 <div class="game-window">
-    <div>BomberMan</div>
+    <h1 class="text-center">BomberMan</h1>
     <div class="form-group">
-        <label>Nick: </label>
+        <label><strong>Nick: </strong></label>
         <input class="form-control " type="text" @bind="@UserNick"/>
     </div>
     <div class="form-group">
         <a class="btn btn-warning" @onclick="StartGame">Start game</a>
+    </div>
+    <br/>
+    <br/>
+    <div class="form-group align-content-center">
+        <a class="btn btn-warning" @onclick="ShowLeaderboard">Leaderboard</a>
     </div>
 </div>

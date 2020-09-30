@@ -27,6 +27,14 @@ html, body {
     background-color: #20c997;
 }
 
+.leaderboard {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #c40ef6;
+}
+
 .bomb {
     background-image: url("/assets/bomb.png");
 }

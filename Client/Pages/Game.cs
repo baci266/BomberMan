@@ -47,13 +47,11 @@ namespace BomberMan.Client.Pages
         
         private void Move(KeyboardEventArgs args)
         {
-            Console.WriteLine("key down");
             GameUniverse.KeyPressed = args;
         }
         
         private void StopMove()
         {
-            Console.WriteLine("key up");
             GameUniverse.KeyPressed = null;
         }
 
@@ -108,8 +106,14 @@ namespace BomberMan.Client.Pages
 
         private void RestartLevel()
         {
-            Console.WriteLine("I m here");
             NavManager.NavigateTo($"/game/{UserNick}/{Level}", true);
+        }
+        
+        private void NextLevel()
+        {
+            int nextLevel = Int32.Parse(Level);
+            nextLevel++;
+            NavManager.NavigateTo($"/game/{UserNick}/{nextLevel}", true);
         }
 
         private void NewGame()

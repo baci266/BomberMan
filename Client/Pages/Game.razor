@@ -2,7 +2,7 @@
 @using BomberMan.Client.Data
 
 <div class="score-board">
-    <table style="background-color: yellow">
+    <table class="table-bordered" style="background-color: yellow">
         <thead>
         <tr>
             <th>User Nick</th>
@@ -33,6 +33,7 @@
         <div class="row">
             You win in time: @ElapsedTime
             <a class="btn btn-warning" @onclick="RestartLevel">Restart</a>
+            <a class="btn btn-warning" @onclick="NextLevel">Next level</a>
             <a class="btn btn-warning" @onclick="NewGame">Start with new Nick</a>
         </div>
     }

@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Content Include="plan1.txt" />
+    <Content Include="plan2.txt" />
   </ItemGroup>
 
 

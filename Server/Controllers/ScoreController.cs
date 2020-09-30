@@ -39,5 +39,15 @@ namespace BomberMan.Server.Controllers
             _context.Add(playerScore);
             _context.SaveChangesAsync();
         }
+        
+        [HttpGet("[action]")]
+        public List<PlayerScore> GetLeaderboard()
+        {
+            var query = from ps in _context.PlayerScores
+                orderby ps.Level ascending, ps.TimeElapsed ascending
+                select ps;
+   
+            return query.ToList();
+        }
     }
 }

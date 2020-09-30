@@ -19,5 +19,10 @@ namespace BomberMan.Client.Pages
             
             NavManager.NavigateTo($"/game/{UserNick}/1");
         }
+        
+        private void ShowLeaderboard()
+        {
+            NavManager.NavigateTo($"/leaderboard");
+        }
     }
 }

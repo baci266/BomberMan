@@ -1,0 +1,29 @@
+﻿@page "/leaderboard"
+
+<div class="leaderboard">
+        <table class="table-bordered">
+            <thead>
+            <tr>
+                <th>Rank:</th>
+                <th>User Nick</th>
+                <th>Win in Time</th>
+                <th>Date</th>
+                <th>Level</th>
+            </tr>
+            </thead>
+            <tbody>
+            @{int rank = 1;}
+            @foreach (var playerScore in Leaderboard)
+            {
+                <tr>
+                    <td>@rank</td> 
+                    <td>@playerScore.UserNick</td>
+                    <td>@playerScore.TimeElapsed</td>
+                    <td>@playerScore.DateTime</td>
+                    <td>@playerScore.Level</td>
+                </tr>
+                rank++;
+            }
+            </tbody>
+        </table>
+</div>
