@@ -188,7 +188,7 @@ namespace BomberMan.Client.Data
                 // if there is bomb on the same tile
                 if (GameElement.OnTheSameTile(bomb, Player)) return;
             }
-            Bombs.Add(new Bomb(Player.MapPositionX, Player.MapPositionY));
+            Bombs.Add(new Bomb(Player.MapCenterPositionX, Player.MapCenterPositionY));
         }
 
         private void ProcessBombs()

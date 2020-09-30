@@ -18,6 +18,9 @@ namespace BomberMan.Client.Data
         public int MoveX => _xDirection * _speed;
         public int MoveY => _yDirection * _speed;
 
+        /// <summary>
+        /// Randomly picks Direction from Direction enum
+        /// </summary>
         public static Movement CreateRandomMovement(int speed)
         {
             Array values = Enum.GetValues(typeof(Direction));
@@ -27,6 +30,9 @@ namespace BomberMan.Client.Data
             return CreateFromDirection(randomDirection, speed);
         }
 
+        /// <summary>
+        /// Create Movement in given direction
+        /// </summary>
         public static Movement CreateFromDirection(Direction direction, int speed)
         {
             int xDirection = 0;

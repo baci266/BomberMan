@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BomberMan.Client", "Client\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BomberMan.Shared", "Shared\BomberMan.Shared.csproj", "{60E85F9D-83F6-4F97-8B9A-F3E7A0904AEE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BomberMan.UnitTests", "BomberMan.UnitTests\BomberMan.UnitTests.csproj", "{3F1A7683-A45F-463E-B5A1-01BA875ABE2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{60E85F9D-83F6-4F97-8B9A-F3E7A0904AEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60E85F9D-83F6-4F97-8B9A-F3E7A0904AEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60E85F9D-83F6-4F97-8B9A-F3E7A0904AEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F1A7683-A45F-463E-B5A1-01BA875ABE2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F1A7683-A45F-463E-B5A1-01BA875ABE2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F1A7683-A45F-463E-B5A1-01BA875ABE2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F1A7683-A45F-463E-B5A1-01BA875ABE2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

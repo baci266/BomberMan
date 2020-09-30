@@ -2,19 +2,25 @@
 
 namespace BomberMan.Client.Data
 {
-    public abstract class GameElement
+    public abstract class GameElement : HtmlRenderable
     {
         public const int BaseTileSize = 50;
+        
         private readonly string _imageName;
         private readonly int _tileWidth;
         private readonly int _tileHeight;
+        
         public int TopPosition { get; set; }
+        
         public int LeftPosition { get; set; }
 
         public int MapPositionX => LeftPosition / BaseTileSize;
+        
         public int MapPositionY => TopPosition / BaseTileSize;
-        public string CssClass => $"{_imageName} element unselectable";
-        public string CssStyle => $"top: {TopPosition}px; left: {LeftPosition}px; width: {_tileWidth}px; height: {_tileHeight}px;";
+        
+        private string CssClass => $"{_imageName} element unselectable";
+        
+        private string CssStyle => $"top: {TopPosition}px; left: {LeftPosition}px; width: {_tileWidth}px; height: {_tileHeight}px;";
         
         public Rectangle ElementRectangle => new Rectangle(LeftPosition, TopPosition, _tileWidth, _tileHeight);
 
@@ -40,5 +46,15 @@ namespace BomberMan.Client.Data
 
         public static bool OnTheSameTile(GameElement element1, GameElement element2)
             => element1.MapPositionX == element2.MapPositionX && element1.MapPositionY == element2.MapPositionY;
+
+        public string GetCssClass()
+        {
+            return CssClass;
+        }
+
+        public string GetCssStyles()
+        {
+            return CssStyle;
+        }
     }
 }

@@ -8,9 +8,14 @@
         
         public bool isDead { get; set; }
         
+        public int MapCenterPositionX => (LeftPosition + (PlayerWidth/2))/ BaseTileSize;
+        
+        public int MapCenterPositionY => (TopPosition + (PlayerHeight/2))/ BaseTileSize;
+
         public Player(int mapPositionX, int mapPositionY) :
             base(ImageName, mapPositionX, mapPositionY, PlayerWidth, PlayerHeight )
         {
+            Speed = 5;
         }
     }
 }

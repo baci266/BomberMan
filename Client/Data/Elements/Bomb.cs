@@ -4,7 +4,7 @@
     {
         private const string ImageName = "bomb";
 
-        private int _ticksToExplode = 300;
+        private int _ticksToExplode = GameUniverse.Fps * 3;
 
         public int ExplosionSize = 3;
         

@@ -30,7 +30,7 @@ namespace BomberMan.Client.Pages
         
         [Inject] private NavigationManager NavManager { get; set; }
         #endregion
-        private List<GameElement> ToRender { get; } = new List<GameElement>();
+        private List<HtmlRenderable> ToRender { get; } = new List<HtmlRenderable>();
         
         protected ElementReference GameDiv;
         
@@ -85,6 +85,14 @@ namespace BomberMan.Client.Pages
             await Http.PostAsJsonAsync("Score/Create", PlayerScore);
         }
 
+        /// <summary>
+        /// This method is onvoked every Tick in Game Universe
+        /// Loads GameElements to render
+        /// Checks Game State if Win the Create Player Score
+        /// Invokes StateHasChanged that re render component
+        /// </summary>
+        /// <param name="sender">GameUniverse</param>
+        /// <param name="eventArgs">Empty</param>
         public void Render(object sender, EventArgs eventArgs)
         {
             var toRender = GameUniverse.GameLogic.AllElements;
