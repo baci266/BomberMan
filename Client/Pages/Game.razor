@@ -37,7 +37,7 @@
         </div>
     }
 </div>
-<div class="game-window" tabindex="0" @ref="GameDiv" @onkeydown="@Move" @onkeyupu="@StopMove">
+<div class="game-window" tabindex="0" @ref="GameDiv" @onkeydown="@Move" @onkeyup="@StopMove">
     @lock (ToRender)
     {
         @foreach (var renderable in ToRender)
