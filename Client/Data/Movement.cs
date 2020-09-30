@@ -20,8 +20,8 @@ namespace BomberMan.Client.Data
 
         public static Movement CreateRandomMovement(int speed)
         {
-            var values = Enum.GetValues(typeof(Direction));
-            var random = new Random().Next(values.Length);
+            Array values = Enum.GetValues(typeof(Direction));
+            int random = new Random().Next(values.Length);
             Direction randomDirection = (Direction)values.GetValue(random);
 
             return CreateFromDirection(randomDirection, speed);

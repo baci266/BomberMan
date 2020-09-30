@@ -30,17 +30,24 @@ namespace BomberMan.Client.Data
 
         private Finish Finish;
         
+        /// <summary>
+        /// Get All Elements To Render
+        /// </summary>
         public List<GameElement> AllElements
         {
             get
             {
-                var elements = new List<GameElement>();
+                List<GameElement> elements = new List<GameElement>();
+                
                 elements.AddRange(ElementMap.GetAllElements());
                 elements.AddRange(Enemies);
                 elements.AddRange(Bombs);
                 elements.AddRange(Explosions);
                 elements.Add(Player);
+                
+                // show finish
                 if (Finish != null) elements.Add(Finish);
+                
                 return elements;
             }
         }
@@ -166,7 +173,8 @@ namespace BomberMan.Client.Data
 
         private void MovePlayer(KeyboardEventArgs keyPressed)
         {
-            var playerMovement = Movement.CreateFromDirection(directionKeys[keyPressed.Code], Player.Speed);
+            Movement playerMovement = Movement.CreateFromDirection(directionKeys[keyPressed.Code], Player.Speed);
+            
             if (Player.CanMove(playerMovement, ElementMap.GetCloseElements(Player)))
             {
                 Player.Move(playerMovement);
@@ -196,7 +204,7 @@ namespace BomberMan.Client.Data
         
         private void CreateExplosion(Bomb bomb)
         {
-            Explosions.AddRange(ElementMap.GetExplosions(bomb));
+            Explosions.AddRange(ElementMap.CreateExplosionForBomb(bomb));
         }
         
         private void ProcessExplosions()

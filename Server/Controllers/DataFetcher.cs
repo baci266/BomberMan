@@ -12,16 +12,16 @@ namespace BomberMan.Server.Controllers
         [HttpGet("[action]")]
         public char[][] LoadMap(string level)
         {
-            var path = $"plan{level}.txt";
+            string path = $"plan{level}.txt";
 
-            var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+            FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
 
             StreamReader sr = new StreamReader(fileStream, Encoding.UTF8);
             
             int width = int.Parse(sr.ReadLine());
             int height = int.Parse(sr.ReadLine());
 
-            var map = new char[height][];
+            char[][] map = new char[height][];
             
 
             for (int i = 0; i < height; i++)

@@ -24,12 +24,13 @@ namespace BomberMan.Server.Controllers
         public List<PlayerScore> GetScoreBoard(string level)
         {
             int.TryParse(level, out int intLevel);
-            
-            var query = from ps in _context.PlayerScores
-                where ps.Level == intLevel
-                orderby ps.TimeElapsed ascending
+
+            IOrderedQueryable<PlayerScore> query = 
+                from ps in _context.PlayerScores 
+                where ps.Level == intLevel 
+                orderby ps.TimeElapsed ascending 
                 select ps;
-   
+
             return query.Take(10).ToList();
         }
         
@@ -43,10 +44,11 @@ namespace BomberMan.Server.Controllers
         [HttpGet("[action]")]
         public List<PlayerScore> GetLeaderboard()
         {
-            var query = from ps in _context.PlayerScores
-                orderby ps.Level ascending, ps.TimeElapsed ascending
+            IOrderedQueryable<PlayerScore> query = 
+                from ps in _context.PlayerScores
+                orderby ps.Level ascending, ps.TimeElapsed ascending 
                 select ps;
-   
+
             return query.ToList();
         }
     }

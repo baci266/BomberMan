@@ -16,7 +16,7 @@ namespace BomberMan.Client.Data
             _width = width;
             _height = height;
             
-            Map = new GameElement[height, width];
+            Map = new GameElement[_height, _width];
         }
         
         public void AddElement(GameElement element)
@@ -46,49 +46,64 @@ namespace BomberMan.Client.Data
             return elements;
         }
 
-        public List<Explosion> GetExplosions(Bomb bomb)
+        public List<Explosion> CreateExplosionForBomb(Bomb bomb)
         {
-            var explosions = new List<Explosion>();
+            List<Explosion> explosions = new List<Explosion>();
+            
             int radius = bomb.ExplosionSize;
             int x = bomb.MapPositionX;
             int y = bomb.MapPositionY;
             
+            // go in 4 directions and if hit wall or box then break
             for (int i = x - 1; i > x - radius; i--)
             {
-                if (Helper(i, y, explosions)) break;
+                if (CheckForWallAndBox(i, y, explosions)) break;
             }
+            
             for (int i = x + 1; i < x + radius; i++)
             {
-                if (Helper(i, y, explosions)) break;
+                if (CheckForWallAndBox(i, y, explosions)) break;
             }
+            
             for (int i = y - 1; i > y - radius; i--)
             {
-                if (Helper(x, i, explosions)) break;
+                if (CheckForWallAndBox(x, i, explosions)) break;
             }
+            
             for (int i = y; i < y + radius; i++)
             {
-                if (Helper(x, i, explosions)) break;
+                if (CheckForWallAndBox(x, i, explosions)) break;
             }
 
             return explosions;
         }
-
-        private bool Helper(int x, int y, List<Explosion> explosions)
+        
+        /// <returns>true if hit wall or box, otherwise false</returns>
+        private bool CheckForWallAndBox(int x, int y, List<Explosion> explosions)
         {
             if (Map[y, x] is Wall) return true;
+            
             if (Map[y, x] is Box)
             {
                 explosions.Add(new Explosion(x, y));
                 RemoveElement(Map[y, x]);
                 return true;
             }
+            
             explosions.Add(new Explosion(x, y));
+            
             return false;
         }
 
+        /// <summary>
+        /// Get all game elements for rendering
+        /// </summary>
+        /// <param name="excludeWallsAndBoxes"></param>
+        /// <returns></returns>
         public List<GameElement> GetAllElements(bool excludeWallsAndBoxes = false)
         {
             List<GameElement> elements = new List<GameElement>();
+            
             for (int i = 0; i < Map.GetLength(0); i++)
             {
                 for (int j = 0; j < Map.GetLength(1); j++)
@@ -101,12 +116,16 @@ namespace BomberMan.Client.Data
             return elements;
         }
 
+        /// <summary>
+        /// Gets free spaces and randomly pick one for finish tile
+        /// </summary>
+        /// <returns>Map position x and y</returns>
         public (int x, int y) GetFinishPosition()
         {
             Random random = new Random();
             List<GameElement> gameElements = GetAllElements(true);
 
-            var randElement = gameElements[random.Next(gameElements.Count)];
+            GameElement randElement = gameElements[random.Next(gameElements.Count)];
             
             return (randElement.MapPositionX, randElement.MapPositionY);
         }
